@@ -32,31 +32,31 @@ window.renderStatistics = function (ctx, names, times) {
 
   ctx.fillText('Ура вы победили!', 120, 40);
   ctx.fillText('Список результатов:', 120, 60);
-  
+
   var max = -1;
 
-  for (var i = 0 ; i < times.length; i++) {
+  for (var i = 0; i < times.length; i++) {
     var time = times[i];
     if (time > max) {
       max = time;
     }
   }
-  
-  var histogramHeight = 150;              // px;
+
+  var histogramHeight = 150; // px;
   var step = histogramHeight / (max - 0); // px;
-      
-  var barWidth = 40;   // px; 
-  var indent = 90;     // px;
-  var initialX = 150;  // px;
-  var initialY = 80;   // px;
+
+  var barWidth = 40; // px;
+  var indent = 90; // px;
+  var initialX = 150; // px;
+  var initialY = 80; // px;
   var lineHeight = 16; // px;
   var scoreIndent = 5; // px;
-  
-  for(var i = 0; i < times.length; i++) {
-    if(names[i]=='Вы') {
+
+  for (i = 0; i < times.length; i++) {
+    if (names[i] === 'Вы') {
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
     } else {
-      ctx.fillStyle = 'rgba(0, 0, 255, 0.' + Math.round(Math.random()*10) + ')';  
+      ctx.fillStyle = 'rgba(0, 0, 255, 0.' + Math.round(Math.random() * 10) + ')';
     }
     ctx.fillRect(initialX + indent * i, initialY + histogramHeight - times[i] * step, barWidth, times[i] * step);
     ctx.fillStyle = '#000';
