@@ -70,10 +70,14 @@ var renderWizard = function (wizard) {
   return wizardElement;
 };
 
-var fragment = document.createDocumentFragment();
-for (i = 0; i < wizards.length; i++) {
-  fragment.appendChild(renderWizard(wizards[i]));
-}
-similarListElement.appendChild(fragment);
+var makeFragment = function () {
+  var fragment = document.createDocumentFragment();
+  for (i = 0; i < wizards.length; i++) {
+    fragment.appendChild(renderWizard(wizards[i]));
+  }
+  return fragment;
+};
+
+similarListElement.appendChild(makeFragment());
 
 userDialog.querySelector('.setup-similar').classList.remove('hidden');
