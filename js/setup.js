@@ -1,164 +1,168 @@
 // Файл setup.js
 'use strict';
 
-var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
+window.Setup = (function () {
 
-var firstNames = [
-  'Иван',
-  'Хуан Себастьян',
-  'Мария',
-  'Кристоф',
-  'Виктор',
-  'Юлия',
-  'Люпита',
-  'Вашингтон'
-];
+  var ESC_KEYCODE = 27;
+  var ENTER_KEYCODE = 13;
 
-var familyNames = [
-  'да Марья',
-  'Верон',
-  'Мирабелла',
-  'Вальц',
-  'Онопко',
-  'Топольницкая',
-  'Нионго',
-  'Ирвинг'
-];
+  var firstNames = [
+    'Иван',
+    'Хуан Себастьян',
+    'Мария',
+    'Кристоф',
+    'Виктор',
+    'Юлия',
+    'Люпита',
+    'Вашингтон'
+  ];
 
-var coatColor = 0;
-var coatColors = [
-  'rgb(101, 137, 164)',
-  'rgb(241, 43, 107)',
-  'rgb(146, 100, 161)',
-  'rgb(56, 159, 117)',
-  'rgb(215, 210, 55)',
-  'rgb(0, 0, 0)'
-];
+  var familyNames = [
+    'да Марья',
+    'Верон',
+    'Мирабелла',
+    'Вальц',
+    'Онопко',
+    'Топольницкая',
+    'Нионго',
+    'Ирвинг'
+  ];
 
-var eyesColor = 0;
-var eyesColors = [
-  'black',
-  'red',
-  'blue',
-  'yellow',
-  'green'
-];
+  var coatColor = 0;
+  var coatColors = [
+    'rgb(101, 137, 164)',
+    'rgb(241, 43, 107)',
+    'rgb(146, 100, 161)',
+    'rgb(56, 159, 117)',
+    'rgb(215, 210, 55)',
+    'rgb(0, 0, 0)'
+  ];
 
-var fireballColor = 0;
-var fireballColors = [
-  '#ee4830',
-  '#30a8ee',
-  '#5ce6c0',
-  '#e848d5',
-  '#e6e848'
-];
+  var eyesColor = 0;
+  var eyesColors = [
+    'black',
+    'red',
+    'blue',
+    'yellow',
+    'green'
+  ];
 
-// Нажатие на элемент .setup-open удаляет класс hidden
-// у блока setup
-var userDialog = document.querySelector('.setup');
-var setupOpen = document.querySelector('.setup-open');
-var setup = document.querySelector('.setup');
-var setupClose = setup.querySelector('.setup-close');
-var setupWizard = setup.querySelector('.setup-wizard');
-var fireballWrap = setup.querySelector('.setup-fireball-wrap');
+  var fireballColor = 0;
+  var fireballColors = [
+    '#ee4830',
+    '#30a8ee',
+    '#5ce6c0',
+    '#e848d5',
+    '#e6e848'
+  ];
+
+  // Нажатие на элемент .setup-open удаляет класс hidden
+  // у блока setup
+  var userDialog = document.querySelector('.setup');
+  var setupOpen = document.querySelector('.setup-open');
+  var setup = document.querySelector('.setup');
+  var setupClose = setup.querySelector('.setup-close');
+  var setupWizard = setup.querySelector('.setup-wizard');
+  var fireballWrap = setup.querySelector('.setup-fireball-wrap');
 
 
-var getRandomValue = function (arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-};
-
-var wizards = [];
-for (var i = 0; i < 4; i++) {
-  wizards[i] = {
-    name: getRandomValue(firstNames) + ' ' + getRandomValue(familyNames),
-    coatColor: getRandomValue(coatColors),
-    eyesColor: getRandomValue(eyesColors)
+  var getRandomValue = function (arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
   };
-}
 
-var similarListElement = userDialog.querySelector('.setup-similar-list');
-
-var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-
-var renderWizard = function (wizard) {
-  var wizardElement = similarWizardTemplate.cloneNode(true);
-
-  wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-  wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
-
-  return wizardElement;
-};
-
-var makeFragment = function () {
-  var fragment = document.createDocumentFragment();
-  for (i = 0; i < wizards.length; i++) {
-    fragment.appendChild(renderWizard(wizards[i]));
+  var wizards = [];
+  for (var i = 0; i < 4; i++) {
+    wizards[i] = {
+      name: getRandomValue(firstNames) + ' ' + getRandomValue(familyNames),
+      coatColor: getRandomValue(coatColors),
+      eyesColor: getRandomValue(eyesColors)
+    };
   }
-  return fragment;
-};
 
-similarListElement.appendChild(makeFragment());
+  var similarListElement = userDialog.querySelector('.setup-similar-list');
 
-userDialog.querySelector('.setup-similar').classList.remove('hidden');
+  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
-var onPopupEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
-    closePopup();
-  }
-};
+  var renderWizard = function (wizard) {
+    var wizardElement = similarWizardTemplate.cloneNode(true);
 
-var openPopup = function () {
-  setup.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscPress);
-};
+    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
 
-var closePopup = function () {
-  setup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
-};
+    return wizardElement;
+  };
 
-setupOpen.addEventListener('click', function () {
-  openPopup();
-});
+  var makeFragment = function () {
+    var fragment = document.createDocumentFragment();
+    for (i = 0; i < wizards.length; i++) {
+      fragment.appendChild(renderWizard(wizards[i]));
+    }
+    return fragment;
+  };
 
-setupOpen.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
+  similarListElement.appendChild(makeFragment());
+
+  userDialog.querySelector('.setup-similar').classList.remove('hidden');
+
+  var onPopupEscPress = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      closePopup();
+    }
+  };
+
+  var openPopup = function () {
+    setup.classList.remove('hidden');
+    document.addEventListener('keydown', onPopupEscPress);
+  };
+
+  var closePopup = function () {
+    setup.classList.add('hidden');
+    document.removeEventListener('keydown', onPopupEscPress);
+  };
+
+  setupOpen.addEventListener('click', function () {
     openPopup();
-  }
-});
+  });
 
-setupClose.addEventListener('click', function () {
-  closePopup();
-});
+  setupOpen.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      openPopup();
+    }
+  });
 
-setupClose.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
+  setupClose.addEventListener('click', function () {
     closePopup();
-  }
-});
+  });
 
-var changeCoatColor = function () {
-  setupWizard.querySelector('.wizard-coat').style.fill = coatColors[(++coatColor) % coatColors.length];
-};
+  setupClose.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      closePopup();
+    }
+  });
 
-setupWizard.querySelector('.wizard-coat').addEventListener('click', function () {
-  changeCoatColor();
-});
+  var changeCoatColor = function () {
+    setupWizard.querySelector('.wizard-coat').style.fill = coatColors[(++coatColor) % coatColors.length];
+  };
 
-var changeEyesColor = function () {
-  setupWizard.querySelector('.wizard-eyes').style.fill = eyesColors[(++eyesColor) % eyesColors.length];
-};
+  setupWizard.querySelector('.wizard-coat').addEventListener('click', function () {
+    changeCoatColor();
+  });
 
-setupWizard.querySelector('.wizard-eyes').addEventListener('click', function () {
-  changeEyesColor();
-});
+  var changeEyesColor = function () {
+    setupWizard.querySelector('.wizard-eyes').style.fill = eyesColors[(++eyesColor) % eyesColors.length];
+  };
 
-var changeFireballColor = function () {
-  fireballWrap.style.background = fireballColors[(++fireballColor) % fireballColors.length];
-};
+  setupWizard.querySelector('.wizard-eyes').addEventListener('click', function () {
+    changeEyesColor();
+  });
 
-fireballWrap.addEventListener('click', function () {
-  changeFireballColor();
-});
+  var changeFireballColor = function () {
+    fireballWrap.style.background = fireballColors[(++fireballColor) % fireballColors.length];
+  };
+
+  fireballWrap.addEventListener('click', function () {
+    changeFireballColor();
+  });
+
+})();
