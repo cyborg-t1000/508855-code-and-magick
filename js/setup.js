@@ -64,7 +64,8 @@ window.Setup = (function () {
   var setupClose = setup.querySelector('.setup-close');
   var setupWizard = setup.querySelector('.setup-wizard');
   var fireballWrap = setup.querySelector('.setup-fireball-wrap');
-
+  var setupTop;
+  var setupLeft;
 
   var getRandomValue = function (arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -112,6 +113,8 @@ window.Setup = (function () {
   };
 
   var openPopup = function () {
+    setupTop = setup.style.top;
+    setupLeft = setup.style.left;
     setup.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
   };
@@ -119,6 +122,8 @@ window.Setup = (function () {
   var closePopup = function () {
     setup.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
+    setup.style.top = setupTop;
+    setup.style.left = setupLeft;
   };
 
   setupOpen.addEventListener('click', function () {
@@ -163,6 +168,46 @@ window.Setup = (function () {
 
   fireballWrap.addEventListener('click', function () {
     changeFireballColor();
+  });
+
+  var shopElement = document.querySelector('.setup-artifacts-shop');
+  var draggedItem = null;
+  var artifactsElement = document.querySelector('.setup-artifacts');
+
+  shopElement.addEventListener('dragstart', function (evt) {
+    if (evt.target.tagName.toLowerCase() === 'img') {
+      draggedItem = evt.target;
+      evt.dataTransfer.setData('text/plain', evt.target.alt);
+      artifactsElement.style.outline = '2px dashed red';
+      evt.target.addEventListener('dragend', function () {
+        artifactsElement.style.outline = '';
+      });
+    }
+  });
+
+  artifactsElement.addEventListener('dragover', function (evt) {
+    evt.preventDefault();
+    return false;
+  });
+
+  artifactsElement.addEventListener('drop', function (evt) {
+    evt.target.style.backgroundColor = '';
+    if (evt.target.tagName.toLowerCase() === 'div') {
+      if (evt.target.children.length === 0) {
+        evt.target.appendChild(draggedItem.cloneNode(true));
+      }
+    }
+    evt.preventDefault();
+  });
+
+  artifactsElement.addEventListener('dragenter', function (evt) {
+    evt.target.style.backgroundColor = 'yellow';
+    evt.preventDefault();
+  });
+
+  artifactsElement.addEventListener('dragleave', function (evt) {
+    evt.target.style.backgroundColor = '';
+    evt.preventDefault();
   });
 
 })();
