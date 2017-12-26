@@ -28,33 +28,39 @@ window.Setup = (function () {
     'Ирвинг'
   ];
 
-  var coatColor = 0;
-  var coatColors = [
-    'rgb(101, 137, 164)',
-    'rgb(241, 43, 107)',
-    'rgb(146, 100, 161)',
-    'rgb(56, 159, 117)',
-    'rgb(215, 210, 55)',
-    'rgb(0, 0, 0)'
-  ];
+  var coatColors = {
+    current: 0,
+    choice: [
+      'rgb(101, 137, 164)',
+      'rgb(241, 43, 107)',
+      'rgb(146, 100, 161)',
+      'rgb(56, 159, 117)',
+      'rgb(215, 210, 55)',
+      'rgb(0, 0, 0)'
+    ]
+  };
 
-  var eyesColor = 0;
-  var eyesColors = [
-    'black',
-    'red',
-    'blue',
-    'yellow',
-    'green'
-  ];
+  var eyesColors = {
+    current: 0,
+    choice: [
+      'black',
+      'red',
+      'blue',
+      'yellow',
+      'green'
+    ]
+  };
 
-  var fireballColor = 0;
-  var fireballColors = [
-    '#ee4830',
-    '#30a8ee',
-    '#5ce6c0',
-    '#e848d5',
-    '#e6e848'
-  ];
+  var fireballColors = {
+    current: 0,
+    choice: [
+      '#ee4830',
+      '#30a8ee',
+      '#5ce6c0',
+      '#e848d5',
+      '#e6e848'
+    ]
+  };
 
   // Нажатие на элемент .setup-open удаляет класс hidden
   // у блока setup
@@ -63,6 +69,8 @@ window.Setup = (function () {
   var setup = document.querySelector('.setup');
   var setupClose = setup.querySelector('.setup-close');
   var setupWizard = setup.querySelector('.setup-wizard');
+  var coat = setupWizard.querySelector('.wizard-coat');
+  var eyes = setupWizard.querySelector('.wizard-eyes');
   var fireballWrap = setup.querySelector('.setup-fireball-wrap');
   var setupTop;
   var setupLeft;
@@ -146,28 +154,24 @@ window.Setup = (function () {
     }
   });
 
-  var changeCoatColor = function () {
-    setupWizard.querySelector('.wizard-coat').style.fill = coatColors[(++coatColor) % coatColors.length];
+  var fillElement = function (element, color) {
+    element.style.fill = color;
   };
 
-  setupWizard.querySelector('.wizard-coat').addEventListener('click', function () {
-    changeCoatColor();
+  var changeElementBackground = function (element, color) {
+    element.style.backgroundColor = color;
+  };
+
+  coat.addEventListener('click', function () {
+    window.colorizeElement(coat, coatColors, fillElement);
   });
 
-  var changeEyesColor = function () {
-    setupWizard.querySelector('.wizard-eyes').style.fill = eyesColors[(++eyesColor) % eyesColors.length];
-  };
-
-  setupWizard.querySelector('.wizard-eyes').addEventListener('click', function () {
-    changeEyesColor();
+  eyes.addEventListener('click', function () {
+    window.colorizeElement(eyes, eyesColors, fillElement);
   });
-
-  var changeFireballColor = function () {
-    fireballWrap.style.background = fireballColors[(++fireballColor) % fireballColors.length];
-  };
 
   fireballWrap.addEventListener('click', function () {
-    changeFireballColor();
+    window.colorizeElement(fireballWrap, fireballColors, changeElementBackground);
   });
 
   var shopElement = document.querySelector('.setup-artifacts-shop');
